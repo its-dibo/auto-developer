@@ -1,0 +1,4 @@
+rules_version = "<%=options.rules.storage.version%>";
+service firebase.storage {
+  <%=options.rules.storage.rules%>
+}

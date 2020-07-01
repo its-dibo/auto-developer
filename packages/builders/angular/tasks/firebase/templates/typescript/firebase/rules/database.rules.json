@@ -1,0 +1,2 @@
+/* https://firebase.google.com/docs/database/security */
+<%=JSON.stringify(options.rules.database)%>

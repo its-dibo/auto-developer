@@ -1,0 +1,4 @@
+rules_version = "<%=options.rules.firestore.version%>";
+service cloud.firestore {
+  <%=options.rules.firestore.rules%>
+}

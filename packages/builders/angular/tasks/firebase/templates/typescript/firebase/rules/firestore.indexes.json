@@ -1,0 +1,4 @@
+<%=JSON.stringify({
+  "indexes": options.rules.firestore.indexes,
+  "fieldOverrides": options.rules.firestore.fieldOverrides
+})%>
