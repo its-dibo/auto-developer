@@ -1,0 +1,33 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+node_modules
+*.lnk
+temp
+*.cache
+*.log
+*.tmp
+**/*.js.map
+Thumbs.db
+.sass-cache
+
+#outputs
+dist
+out-tsc
+bazel-out
+
+# IDEs
+.idea
+.project
+.classpath
+.settings/
+*.launch
+.history/*
+.vscode/*
+
+
+
+<%= gitignore %>
+# notes:
+# - don't ignore package-lock.json because it used by npm to install the exactly same versions of dependencies, https://stackoverflow.com/a/50868690
+# - add any file contains sensitive data
+#---------------------------

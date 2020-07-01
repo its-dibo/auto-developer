@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "runSchematics": {
+      "factory": "./index#runSchematics",
+      "description": "..",
+      "hidden": true
+    },
+    "init": {
+      "description": "inits a new Node.js project with typeScript, and sets up the basic settings for tsconfig, tslint, gitignore, ...",
+      "factory": "./index#init",
+      "schema": "./tasks/init/schema.json",
+      "aliases": ["ng-add"]
+    }
+  }
+}

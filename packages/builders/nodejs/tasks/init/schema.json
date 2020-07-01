@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "NodeJsBuilder",
+  "title": "autodev builder for nodejs",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "x-prompt": "project name",
+      "description": "project's name"
+    },
+    "path": {
+      "type": "string",
+      "defult": "",
+      "x-prompt": "project path (default: '/$projectName')",
+      "description": "project's root path"
+    }
+  },
+  "required": ["name"]
+}
