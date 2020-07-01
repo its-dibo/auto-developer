@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "autoDeveloper",
+  "title": "auto developer",
+  "type": "object",
+  "properties": {
+    "dvPath": {
+      "type": "string",
+      "default": "./dv.config.js",
+      "x-prompt": "auto developer config path (default: ./dv.config.js)"
+    }
+  },
+  "required": []
+}

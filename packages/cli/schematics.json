@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "start": {
+      "description": "start auto developer workflow",
+      "factory": "./index",
+      "schema": "./schema.json"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "@engineers/auto-developer-cli",
+  "schematics": "./schematics.json",
+  "version": "1.0.8",
+  "description": "automates the development workflow",
+  "main": "index.js",
+  "private": false,
+  "bin": {
+    "dv": "bin/dv.js"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eng-dibo/auto-developer-example.git"
+  },
+  "keywords": [
+    "auto developer",
+    "angular",
+    "schematics",
+    "generator",
+    "Yeoman"
+  ],
+  "author": "https://github.com/eng-dibo/",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eng-dibo/auto-developer/issues"
+  },
+  "homepage": "https://github.com/eng-dibo/auto-developer#readme",
+  "dependencies": {
+    "@engineers/auto-developer": ""
+  }
+}
