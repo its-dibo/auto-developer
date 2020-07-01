@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "runSchematics": {
+      "factory": "./index#runSchematics",
+      "description": "..",
+      "hidden": true
+    },
+    "init": {
+      "description": "create a new Angular workspace",
+      "factory": "./index#init",
+      "schema": "./tasks/init/schema.json",
+      "aliases": ["new"]
+    },
+    "material": {
+      "description": "add material design to an Angular project",
+      "factory": "./index#material",
+      "schema": "./tasks/material/schema.json"
+    }
+  }
+}

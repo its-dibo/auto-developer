@@ -1,0 +1,23 @@
+{
+  "name": "@engineers/angular-builder",
+  "version": "1.0.8",
+  "private": false,
+  "description": "creates Angular woekspaces",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eng-dibo/auto-developer-example.git"
+  },
+  "keywords": [
+    "auto-developer",
+    "angular-builder"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@engineers/auto-developer": ""
+  },
+  "devDependencies": {},
+  "author": "https://github.com/eng-dibo",
+  "schematics": "./schematics.json"
+}
