@@ -6,8 +6,8 @@
   "main": "",
   "scripts": {
     "build": "node tasks build",
-    "schematics": "cd dist && schematics ./packages/cli/schematics.json:start --dry-run=false --force=true --dvPath=./dv.config.js",
-    "schematics:dry": "cd dist && schematics ./packages/cli/schematics.json:start --dry-run=true --force=true --dvPath=./dv.config.js",
+    "schematics": "cd dist && schematics ./packages/cli/schematics.json:start --dry-run=false --force=true --dvPath=./example/dv.config.js",
+    "schematics:dry": "cd dist && schematics ./packages/cli/schematics.json:start --dry-run=true --force=true --dvPath=./example/dv.config.js",
     "schematics:dev": "npx cross-env NODE_ENV=development npm run schematics",
     "schematics:dev:dry": "npx cross-env NODE_ENV=development npm run schematics:dry",
     "start": "npm run build && npm run schematics",
