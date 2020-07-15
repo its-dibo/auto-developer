@@ -14,8 +14,7 @@ import {
   addExportToModule,
   addDeclarationToModule,
   addProviderToModule,
-  addBootstrapToModule,
-  addImport
+  addBootstrapToModule
 } from "./typescript";
 import { basename } from "path";
 

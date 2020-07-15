@@ -35,6 +35,7 @@ export interface TemplatesOptions {
   filter?: ((filePath: string) => boolean) | null; //todo: | Rule   // Rule = path => _filter(path => true), //todo: benchmark filter=null VS filter=path=>_filter(..)
   merge?: boolean;
   files?: ((file: sc.FileEntry) => sc.FileEntry) | null;
+  replace?: boolean;
 }
 export function templates(
   //template path, relative to the schematic factory (i.e start.ts)
@@ -42,7 +43,8 @@ export function templates(
   from: string | sc.Source,
   to?: string | any[],
   vars?: any,
-  options: TemplatesOptions = {}
+  options?: TemplatesOptions = {},
+  tree?: sc.Tree //required if(options.replace!==false)
 ) {
   //console.log({from,to,vars,filter,merge})
   if (typeof from == "string") from = sc.url(from); //or if(!(files instanceof Source)
@@ -56,7 +58,7 @@ export function templates(
           //https://developer.okta.com/blog/2019/02/13/angular-schematics
           // fix for https://github.com/angular/angular-cli/issues/11337
           //todo: add options to override  options.override?forEach(...):noop()
-          options.replace
+          tree && options.replace !== false
             ? sc.forEach((file: sc.FileEntry) => {
                 if (tree.exists(file.path))
                   tree.overwrite(file.path, file.content);

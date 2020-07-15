@@ -27,7 +27,12 @@ export * from "@schematics/angular/utility/lint-fix";
 export interface Imports {
   [element: string]: string;
 }
-export function addImports(tree: Tree, toPath: string, imports: Imports) {
+export function addImports(
+  tree: Tree,
+  toPath: string,
+  imports: Imports,
+  isDefault = false // import element from "fromPath"
+) {
   let content = read(tree, toPath);
   if (!content)
     error(`file ${toPath} dosen\'t exist or empty`, "tools/typescript");
@@ -48,7 +53,7 @@ export function addImports(tree: Tree, toPath: string, imports: Imports) {
         toPath,
         element,
         fromPath,
-        element.startsWith("* as") || element === ""
+        isDefault || element.startsWith("* as") || element === ""
       )
     );
   }
