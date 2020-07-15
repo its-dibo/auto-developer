@@ -2,12 +2,15 @@
 //copy it to your workspace (i.e: where all projects will be created) and modify it,
 //then run >dv
 
-import { join } from "path";
+import { join, relative } from "path";
 import * as sc from "@engineers/auto-developer/tools/schematics";
 import { json } from "@engineers/auto-developer/tools/json";
+import { addImports } from "@engineers/auto-developer/tools/typescript";
 
 const name = "example",
   path = "projects/example";
+
+export interface Options extends sc.Obj {}
 
 export interface AutoDev {
   config: {
@@ -125,6 +128,50 @@ const autoDev: AutoDev = {
           },
           "deepMerge"
         )
+    ],
+    [
+      (tree: sc.Tree, options: Options, config, context: sc.SchematicContext) =>
+        sc.templates(
+          relative(
+            context.schematic.description.path,
+            join(__dirname, `./templates/packages`)
+          ),
+          `${path}/packages`,
+          {},
+          { replace: true },
+          tree
+        )
+    ],
+    //temp: firebase push notifications functions added manually.
+    [
+      (
+        tree: sc.Tree,
+        options: Options,
+        config,
+        context: sc.SchematicContext
+      ) => {
+        return sc.chain([
+          sc.templates(
+            relative(
+              context.schematic.description.path,
+              join(__dirname, `./templates/firebase-push-notifications`)
+            ),
+            path,
+            {},
+            { replace: true },
+            tree
+          ),
+          tree =>
+            addImports(
+              tree,
+              `${path}/src/app/app.component.ts`,
+              {
+                firebaseConfig: "../config/firebase.js"
+              },
+              true
+            )
+        ]);
+      }
     ]
   ]
 };

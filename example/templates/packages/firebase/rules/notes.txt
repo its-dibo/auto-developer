@@ -1,0 +1,3 @@
+This is just basic rules, extend and override them to suite your needs.
+
+https://firebase.google.com/docs/database/security

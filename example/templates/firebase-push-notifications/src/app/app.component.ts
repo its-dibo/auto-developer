@@ -21,22 +21,23 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     //todo: or initialize in server
     if (!firebase.apps.length) {
-      let firebaseConfig = require("..../firebase/config.json");
       firebase.initializeApp(firebaseConfig);
       navigator.serviceWorker
-        .getRegisteration()
-        .then(sw => firebase.messageing().useServiceWorker(sw));
+        .getRegistration()
+        .then(sw => firebase.messaging().useServiceWorker(sw));
     }
   }
 
   getNotifsPermition() {
-    firebase
-      .messaging()
+    let msg = firebase.messaging();
+    msg
       .requestPermission()
       .then(() =>
-        //todo: this.msg
+        //todo: this.msg?
         //todo: save token to localhost
-        this.msg.getToken().then(token => console.log({ token }))
+        //sendTokenToServer(currentToken);
+        //updateUIForPushEnabled(currentToken);
+        msg.getToken().then(token => console.log({ token }))
       )
       .catch(error =>
         console.warn(`permission to notifications denied`, { error })
