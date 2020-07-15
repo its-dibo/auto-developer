@@ -1,0 +1,52 @@
+<!--
+todo:
+- adjust pipes by the data providor
+  i.e: instead of using "title | length:200", data.title must be provided correctly,
+  or use preferences to adjust it.
+
+-  as of angular 9 @ngx-share/buttons has an issue: Cannot read property 'shareButton' of undefined
+  https://github.com/MurhafSousli/ngx-sharebuttons/issues/429#issuecomment-583906237
+  so we temporary stopped <share-buttons>
+ -->
+<ng-container *ngIf="dataObj; else loading">
+  <ng-container
+    *ngTemplateOutlet="!dataObj.payload?noContent:dataObj.type=='item'?itemBlock:pref.layout=='list'?listBlock:gridBlock; context:{dataObj:dataObj.payload}"
+  ></ng-container>
+</ng-container>
+
+<ng-template let-item="dataObj" #itemBlock>
+  <ngx-content-article [data]="item" type="item"></ngx-content-article>
+</ng-template>
+
+<ng-template #gridBlock let-dataObj="dataObj">
+  <!-- todo: use the same scroll bar for cdk/scrolling and the browser scrollbar-->
+  <cdk-virtual-scroll-viewport itemSize="5" style="height:500vh">
+    <div class="masonry">
+      <div class="masonry-item" *cdkVirtualFor="let item of dataObj">
+        <ngx-content-article [data]="item" type="list"></ngx-content-article>
+      </div>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</ng-template>
+
+<ng-template #listBlock let-dataObj="dataObj">
+  <mat-list>
+    <mat-list-item *ngFor="let item of dataObj">
+      <h4 mat-line dir="auto">
+        <a href="{{item.link || '#'}}">{{item.title | length:200}}</a>
+      </h4>
+      <h6 mat-line dir="auto">{{item.subtitle | length:200}}</h6>
+      <div mat-line [innerHtml]="item.content | summary" dir="auto"></div>
+      <!-- todo: add cancel btn -->
+    </mat-list-item>
+  </mat-list>
+</ng-template>
+
+<ng-template #noContent dir="auto"
+  >{{pref.noContent || 'No content!'}} <br />
+  <a href="{{pref.back || '/'}}">Back</a></ng-template
+>
+
+<ng-template #loading>
+  <ngx-loading [show]="true"></ngx-loading>
+</ng-template>

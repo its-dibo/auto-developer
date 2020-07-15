@@ -130,6 +130,7 @@ const autoDev: AutoDev = {
         )
     ],
     [
+      //todo: add {pkg/*: ./packages/*} to tconfig.paths
       (tree: sc.Tree, options: Options, config, context: sc.SchematicContext) =>
         sc.templates(
           relative(

@@ -1,0 +1,16 @@
+# firebase (example-f9e11): 
+
+firebaseConfig = {
+  apiKey: "AIzaSyBSaQPKf9q-fER2V85_5UXvpM_7-5ydWDY",
+  authDomain: "example-f9e11.firebaseapp.com",
+  databaseURL: "https://example-f9e11.firebaseio.com",
+  projectId: "example-f9e11",
+  storageBucket: "example-f9e11.appspot.com",
+  messagingSenderId: "962970228513",
+  appId: "1:962970228513:web:1a5a6c5ded8f1d5c8ad060"
+};
+
+
+GCM:
+ sender id: 962970228513
+ server id: AAAA4DV_lyE:APA91bEnktB9Yt-pLMLmqqyEjrktRP2QJuU5geqqLOr6KkzmW2lIizbpxAdBOteh_VgyOjgL2luKxfK_IBJF80mrm_Bx69xR9rZKhwONsgygInh6qG3Tf-baSBKj9wvd6ThZJ7NyrRmJ

@@ -1,0 +1,116 @@
+<h3 *ngIf="_formObj?.title">{{_formObj.title}}</h3>
+<div *ngIf="response" class="alert" [ngClass]="response.class">
+  <div [innerHTML]="response.message"></div>
+</div>
+
+<!-- or: <mat-progress-bar [value]="loaded/total..."> => MatProgressBarModule -->
+<progress
+  *ngIf="progress && response?.status==='loading'"
+  [value]="progress?.loaded"
+  [max]="progress?.total"
+  style="width:100%;display:block"
+>
+</progress>
+
+<form
+  *ngIf="_formObj?.form;"
+  #formElement
+  [formGroup]="_formObj.form"
+  method="post"
+  enctype="multipart/form-data"
+>
+  <!-- todo: pass `step` number to the parent comp to display the proper content -->
+  <ng-content select="[data-before]"></ng-content>
+  <formly-form
+    [form]="_formObj.form"
+    [fields]="_formObj.fields"
+    [model]="_formObj.model"
+  ></formly-form>
+
+  <!--
+  using (ngSubmit)="onSubmit(..)" causes the form to show errors after submitting
+  so we replaced it with (click)="onSubmit(..)", and  type="submit" with type="button"
+  https://stackoverflow.com/a/51003685/12577650 -->
+
+  <ng-content select="[data-after]"></ng-content>
+  <button
+    mat-raised-button
+    *ngIf="_formObj.steps"
+    (click)="go(-1)"
+    type="button"
+    [disabled]="step===0"
+  >
+    Previous
+  </button>
+  <button
+    mat-raised-button
+    *ngIf="_formObj.steps"
+    (click)="go(+1)"
+    type="button"
+    [disabled]="step===_formObj.steps.length-1"
+  >
+    Next
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    *ngIf="step===_formObj.steps.length-1"
+    [disabled]="!_formObj.form.valid || _formObj.form.pristine || response?.status==='loading'"
+    (click)="onSubmit(_formObj)"
+  >
+    Submit
+  </button>
+</form>
+
+<ngx-loading
+  [show]="!_formObj?.form || response?.status==='loading'"
+></ngx-loading>
+
+<!-- material design form-field example:
+<mat-form-field appearance="legacy">
+  <mat-label for="title">Title</mat-label>
+  <input matInput placeholder="title" formControlName="title" />
+  <mat-hint align="end"
+    ><span class="hint">no more than 70 chatacters</span></mat-hint
+  >
+  <mat-error *ngIf="!isValid('title')"
+    >{{ getErrorMessage("title") }}</mat-error
+  >
+</mat-form-field>
+
+
+  <mat-form-field appearance="legacy">
+    <mat-label for="content">Content</mat-label>
+    <textarea
+      formControlName="content"
+      matInput
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="5"
+      placeholder="content..."
+    ></textarea>
+  </mat-form-field>
+
+
+  <h4>Cover image</h4>
+  <input
+    type="file"
+    #file
+    formControlName="cover"
+    style="display: none"
+    (change)="onFilesAdded()"
+    multiple
+    name="cover"
+  />
+  <button
+    type="button"
+    [disabled]="uploading || uploadSuccessful"
+    mat-raised-button
+    color="primary"
+    (click)="addFiles()"
+  >
+    Add Files
+  </button>
+
+-->
