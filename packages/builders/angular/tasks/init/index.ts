@@ -115,6 +115,18 @@ export default function(
     tree => {
       if (config.dev)
         console.log(`>> [angular:init] adding scripts to package.json`);
+      let scripts = {
+        "ng:build:browser": "ng build --prod --aot",
+        "ng:build:browser:dev": "ng build",
+        "ng:build:server": `ng run ${options.name}:server:production --bundleDependencies`,
+        "ng:build:server:dev": `ng run ${options.name}:server --bundleDependencies`,
+        "ng:build": "npm run ng:build:browser && npm run ng:build:server",
+        "ng:build:dev":
+          "npm run ng:build:browser:dev && npm run ng:build:server:dev",
+        "ng:serve": "ng serve -o",
+        "ng:prerender": `ng run ${options.name}:prerender`
+      };
+
       return json.write(
         tree,
         `${options.path}/package.json`,
@@ -122,11 +134,8 @@ export default function(
           scripts: {
             "ng:build:browser": "ng build --prod --aot",
             "ng:build:browser:dev": "ng build",
-            "ng:build:server": `ng run ${options.name}:server:production --bundleDependencies`,
-            "ng:build:server:dev": `ng run ${options.name}:server --bundleDependencies`,
-            "ng:build": "npm run ng:build:browser && npm run ng:build:server",
-            "ng:build:dev":
-              "npm run ng:build:browser:dev && npm run ng:build:server:dev",
+            "ng:build": "npm run ng:build:browser", //&&build:server (angular:universal)
+            "ng:build:dev": "npm run ng:build:browser:dev",
             "ng:serve": "ng serve -o",
             "ng:prerender": `ng run ${options.name}:prerender`
           }
@@ -134,8 +143,15 @@ export default function(
         "deepMerge"
       );
     }
+    /*todo: angular:universal add/modify these properties to scripts.
+    {
+      "ng:build:server": `ng run ${options.name}:server:production --bundleDependencies`,
+      "ng:build:server:dev": `ng run ${options.name}:server --bundleDependencies`,
+      "ng:build": "... && npm run ng:build:server",
+      "ng:build:dev":"... && npm run ng:build:server:dev",
+    }
+    */
 
-    //todo: update 'scripts' in package.json; "start": "ng serve", "build": "ng build"
     //todo: update karma.conf.js
   ];
 

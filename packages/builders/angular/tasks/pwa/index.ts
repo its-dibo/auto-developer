@@ -13,7 +13,6 @@ import {
 } from "@engineers/auto-developer/tools/angular";
 import { deepMerge } from "@engineers/auto-developer/tools/objects";
 import { package, json } from "@engineers/auto-developer/tools/json";
-import { addImport } from "@engineers/auto-developer/tools/typescript";
 import { insert } from "@engineers/auto-developer/tools/html";
 import { join, relative } from "path";
 

@@ -16,7 +16,6 @@ import {
   getWorkspace,
   findModule
 } from "@engineers/auto-developer/tools/angular";
-import { addImport } from "@engineers/auto-developer/tools/typescript";
 import { existsSync } from "fs";
 
 function error(msg, mark) {
@@ -124,7 +123,7 @@ export default function(
         let module = findModule(tree, `${options.path}/src/app`);
         if (module) {
           //no need to use addImport(), as addToNgModule() uses it internally.
-          //addImport(tree, "@angular/core", module, "BrowserAnimationsModule");
+          //addImports(tree, module,{"BrowserAnimationsModule":"@angular/core"} );
           addToNgModule(
             tree,
             "import",
