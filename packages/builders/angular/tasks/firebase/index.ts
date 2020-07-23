@@ -9,7 +9,6 @@ import {
 import { deepMerge } from "@engineers/auto-developer/tools/objects";
 import { package, json } from "@engineers/auto-developer/tools/json";
 import { addImports } from "@engineers/auto-developer/tools/typescript";
-import { join, relative } from "path";
 
 function error(msg, mark) {
   _error(msg, "angular:firebase" + mark ? `/${mark}` : "");
@@ -64,13 +63,12 @@ export default function(
       options.public = options.public || options.dist;
       options.main = options.main || `${options.dist}/index.js`;
 
-      let templatePath = relative(
-        context.schematic.description.path,
-        join(__dirname, `./templates/${options.language}`)
-      );
-
       //todo: move to options.path/options.source (ex: project/firebase, project/.)
-      return templates(templatePath, options.path, { options });
+      return templates(
+        [`${__dirname}/templates/${options.language}`, context],
+        options.path,
+        { options }
+      );
     },
     tree => {
       if (config.dev) console.log(">> [angular:firebase] adding dependencies");

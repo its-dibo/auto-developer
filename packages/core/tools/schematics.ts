@@ -1,6 +1,7 @@
 import * as sc from "@angular-devkit/schematics";
 import { InsertChange } from "@schematics/angular/utility/change";
 import { objectType } from "./objects";
+import { join, relative } from "path";
 
 export * from "@angular-devkit/schematics";
 export * from "@schematics/angular/utility/change";
@@ -40,14 +41,18 @@ export interface TemplatesOptions {
 export function templates(
   //template path, relative to the schematic factory (i.e start.ts)
   //use relative(context.schematic.description.path,join(__dirname, "./templates"))
-  from: string | sc.Source,
+  from: string | sc.Source | any[],
   to?: string | any[],
   vars?: any,
   options?: TemplatesOptions = {},
   tree?: sc.Tree //required if(options.replace!==false)
 ) {
   //console.log({from,to,vars,filter,merge})
-  if (typeof from == "string") from = sc.url(from); //or if(!(files instanceof Source)
+  if (typeof from == "string") from = sc.url(from);
+  //[__dirname+'/templates', context]
+  else if (form instanceof Array)
+    form = relative(form[1].schematic.description.path, form[0]);
+
   let rules =
     to instanceof Array
       ? to

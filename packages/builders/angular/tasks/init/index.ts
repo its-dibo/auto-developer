@@ -7,7 +7,7 @@ import {
 import { dependencies } from "@engineers/auto-developer/tools/files";
 import { package, json } from "@engineers/auto-developer/tools/json";
 import { existsSync } from "fs";
-import { join, relative } from "path";
+import { join } from "path";
 
 function error(msg, mark) {
   sc.error(msg, "angular:init");
@@ -48,12 +48,11 @@ export default function(
       if (!existsSync(join(__dirname, `./templates/v${versionMajor}`)))
         error(`version ${versionMajor} is not supported`);
 
-      let templatePath = relative(
-        context.schematic.description.path,
-        join(__dirname, `./templates/v${versionMajor}`)
+      return sc.templates(
+        [`${__dirname}/templates/v${versionMajor}`, context],
+        options.path,
+        options
       );
-
-      return sc.templates(templatePath, options.path, options);
     },
 
     tree => {

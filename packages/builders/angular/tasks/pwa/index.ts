@@ -14,7 +14,6 @@ import {
 import { deepMerge } from "@engineers/auto-developer/tools/objects";
 import { package, json } from "@engineers/auto-developer/tools/json";
 import { insert } from "@engineers/auto-developer/tools/html";
-import { join, relative } from "path";
 
 function error(msg, mark) {
   _error(msg, "angular:pwa" + mark ? `/${mark}` : "");
@@ -108,14 +107,12 @@ export default function(
       };
 
       options = deepMerge(options, defaultOptions, true);
-      let templatePath = relative(
-        context.schematic.description.path,
-        join(__dirname, `./templates`)
-      );
 
       let manifest = { ...options };
       delete manifest.path;
-      return templates(templatePath, options.path, { manifest });
+      return templates([`${__dirname}/templates`, context], options.path, {
+        manifest
+      });
     },
     tree => {
       if (config.dev) console.log(">> [angular:PWA] modifying angular.json");

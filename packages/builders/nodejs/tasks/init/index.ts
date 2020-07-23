@@ -5,7 +5,6 @@ import {
   strings
 } from "@engineers/auto-developer/tools/objects";
 import { package } from "@engineers/auto-developer/tools/json";
-import { join, relative } from "path";
 
 export interface Options {
   name: string;
@@ -171,10 +170,7 @@ export default function(
       if (config.dev)
         console.log(`>> [nodejs:init] creating files from templates`);
       return sc.templates(
-        relative(
-          context.schematic.description.path,
-          join(__dirname, "./templates")
-        ),
+        [`${__dirname}/templates`, context],
         path,
         {
           opt,
