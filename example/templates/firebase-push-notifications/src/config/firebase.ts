@@ -1,9 +1,9 @@
-import { Firebase } from "pkg/firebase/admin";
-import { initializeApp } from "firebase-admin";
+//import { Firebase } from "pkg/firebase/admin";
+//import { initializeApp } from "firebase-admin";
 
 //https://console.firebase.google.com/u/0/project/example-f9e11/settings/serviceaccounts
 //https://cloud.google.com/docs/authentication/production#auth-cloud-implicit-nodejs
-let cert = {
+let serviceAccount = {
   type: "service_account",
   project_id: "example-f9e11",
   private_key_id: "4d66f15e4cdab3f5652a24ffa094ee2b8c294f5c",
@@ -19,9 +19,12 @@ let cert = {
 };
 
 export default {
-  cert,
-  appId: "1:684865417357:web:e4ff28c37e5336548cb2c4",
-  apiKey: "AIzaSyAZ_fD4HflKU1rIb5zfi5IZ2_EMJSAT_Tk",
-  messagingSenderId: "684865417357", //Cloud Messaging
-  measurementId: "G-59RT8HNS31"
+  //credential: admin.credential.cert(serviceAccount),
+  apiKey: "AIzaSyBSaQPKf9q-fER2V85_5UXvpM_7-5ydWDY",
+  authDomain: "example-f9e11.firebaseapp.com",
+  databaseURL: "https://example-f9e11.firebaseio.com",
+  projectId: "example-f9e11",
+  storageBucket: "example-f9e11.appspot.com",
+  messagingSenderId: "962970228513", //Cloud Messaging
+  appId: "1:962970228513:web:1a5a6c5ded8f1d5c8ad060"
 };

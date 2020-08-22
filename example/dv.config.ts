@@ -23,9 +23,6 @@ export interface AutoDev {
   builders: any[]; //todo: [factory: function|string, options:{}];
 }
 
-//if 'export default' used, we will need to use require('dv.js').default
-//this is equivelent to module.exports{} in js
-export = autoDev;
 const autoDev: AutoDev = {
   config: {
     path,
@@ -176,3 +173,7 @@ const autoDev: AutoDev = {
     ]
   ]
 };
+
+//if 'export default' used, we will need to use require('dv.js').default
+//this is equivelent to module.exports{} in js
+export = autoDev;
