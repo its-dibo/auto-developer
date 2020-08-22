@@ -19,6 +19,9 @@ function error(msg, mark) {
   _error(msg, "angular:pwa" + mark ? `/${mark}` : "");
 }
 
+interface Options {
+  [key: string]: any;
+}
 export default function(
   tree: Tree,
   options: Options, //builder option

@@ -1,4 +1,7 @@
-import { runSchematics as _runSchematics } from "@engineers/auto-developer/tools/schematics";
+import {
+  runSchematics as _runSchematics,
+  RunSchematicsOptions
+} from "@engineers/auto-developer/tools/schematics";
 import init from "./tasks/init";
 
 export function runSchematics(options: RunSchematicsOptions) {

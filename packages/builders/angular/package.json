@@ -3,7 +3,6 @@
   "version": "1.0.8",
   "private": false,
   "description": "creates Angular woekspaces",
-  "main": "index.js",
   "scripts": {},
   "repository": {
     "type": "git",

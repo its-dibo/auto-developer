@@ -3,7 +3,6 @@
   "version": "1.0.10",
   "private": false,
   "description": "inits a new Node.js project with typeScript, and sets up the basic settings for tsconfig, tslint, gitignore, ...",
-  "main": "index.js",
   "scripts": {},
   "repository": {
     "type": "git",

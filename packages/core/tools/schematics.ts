@@ -48,10 +48,11 @@ export function templates(
   tree?: sc.Tree //required if(options.replace!==false)
 ) {
   //console.log({from,to,vars,filter,merge})
-  if (typeof from == "string") from = sc.url(from);
+
   //[__dirname+'/templates', context]
-  else if (form instanceof Array)
-    form = relative(form[1].schematic.description.path, form[0]);
+  if (from instanceof Array)
+    from = relative(from[1].schematic.description.path, from[0]);
+  if (typeof from === "string") from = sc.url(from);
 
   let rules =
     to instanceof Array

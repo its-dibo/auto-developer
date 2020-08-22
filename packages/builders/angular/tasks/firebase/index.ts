@@ -8,7 +8,10 @@ import {
 } from "@engineers/auto-developer/tools/schematics";
 import { deepMerge } from "@engineers/auto-developer/tools/objects";
 import { package, json } from "@engineers/auto-developer/tools/json";
-import { addImports } from "@engineers/auto-developer/tools/typescript";
+import {
+  addImports,
+  addToNgModule
+} from "@engineers/auto-developer/tools/typescript";
 
 function error(msg, mark) {
   _error(msg, "angular:firebase" + mark ? `/${mark}` : "");
@@ -67,7 +70,10 @@ export default function(
       return templates(
         [`${__dirname}/templates/${options.language}`, context],
         options.path,
-        { options }
+        { options },
+        {
+          filter: el => options.fcm || !el.contains("fcm.service")
+        }
       );
     },
     tree => {
@@ -131,50 +137,38 @@ export default function(
           );
 
         //todo: if(!ngsw, i.e:FCM requires service worker, add PWA to the project) warning
-
         //https:medium.com/kabbage-engineering/angular-pwa-app-notification-using-firebase-cloud-messaging-d1b7bd171b98
         //final code: https://github.com/zhangxin511/PushDemo
         addImports(tree, `${options.path}/src/app/app.component.ts`, {
-          "* as firebase": "firebase/app", //todo: or firebase-admin (for server-side)
-          "": "firebase/messaging", //admin.messaging()
-          SwPush: "@angular/service-worker"
+          FCMService: "./fcm.service"
         });
+
+        addToNgModule(
+          tree,
+          "import",
+          "AngularFireModule.initializeApp(firebaseConfig)",
+          `${options.path}/src/app/app.module.ts`,
+          "@angular/fire"
+        );
+
+        addToNgModule(
+          tree,
+          "import",
+          "AngularFireMessagingModule",
+          `${options.path}/src/app/app.module.ts`,
+          "@angular/fire/messaging"
+        );
 
         /*
         //todo: add this code to app.component.ts
         //todo: import OnInit
+        ngOnInit() {
+          this.FCMService.receiveMessage();
+        }
 
-         constructor(swpush:SwPush){
-           swpush.messages.subscribe(msg => console.log('push message', msg));
-           swpush.notificationClicks.subscribe(click => console.log('notification click', click));
-       }
-       ngOnInit(){
-         //todo: or initialize in server
-         //consumer has to add firebaseConfig to imports
-         //ex: import firebaseConfig from 'path/to/firebaseConfig.js'
-         if (!firebase.apps.length) {
-           firebase.initializeApp(firebaseConfig);
-           navigator.serviceWorker
-             .getRegistration()
-             .then(sw => firebase.messageing().useServiceWorker(sw));
-         }
-       }
-
-       getNotifsPermition() {
-         let msg = firebase.messaging();
-         msg
-           .requestPermission()
-           .then(() =>
-             //todo: this.msg?
-             //todo: save token to localhost
-             //sendTokenToServer(currentToken);
-             //updateUIForPushEnabled(currentToken);
-             msg.getToken().then(token => console.log({ token }))
-           )
-           .catch(error =>
-             console.warn(`permission to notifications denied`, { error })
-           );
-       }
+        getNotifsPermition() {
+          this.FCMService.getNotifsPermition();
+        }
 
         //app.component.html
         <button (click)="getNotifsPermition()">allow notifications</button>

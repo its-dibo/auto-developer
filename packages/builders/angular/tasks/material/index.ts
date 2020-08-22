@@ -22,6 +22,10 @@ function error(msg, mark) {
   sc.error(msg, "angular:material" + mark ? `/${mark}` : "");
 }
 
+interface Options {
+  [key: string]: any;
+}
+
 export default function(
   tree: sc.Tree,
   options: Options,

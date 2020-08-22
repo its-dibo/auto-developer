@@ -1,5 +1,6 @@
 import * as sc from "./schematics";
 import { objectType, merge } from "./objects";
+import { error as _error, Tree, Rule } from "./schematics";
 
 //import stripJsonComments from "strip-json-comments";
 
@@ -8,7 +9,7 @@ export * from "@schematics/angular/utility/paths";
 export * from "@schematics/angular/utility/json-utils";
 
 function error(msg, mark = "") {
-  sc.error(msg, "tools/files" + mark ? `/${mark}` : "");
+  _error(msg, "tools/files" + mark ? `/${mark}` : "");
 }
 
 export type JsonData = { [key: string]: any }; //todo: | (kay: string) => any
@@ -19,16 +20,12 @@ export type Strategy =
   | "append" //append the new data to the existing content
   | "prepend";
 
-export function read(
-  tree: sc.Tree,
-  file: string,
-  enc: string = "utf-8"
-): string {
+export function read(tree: Tree, file: string, enc: string = "utf-8"): string {
   if (!tree) error("tree is required", `insert(${file})`);
   if (!file) error("file is required", `insert(${file})`);
 
   if (!tree.exists(file)) return null;
-  //throw new sc.SchematicsException(`${file} is not existing`);
+  //throw new SchematicsException(`${file} is not existing`);
   try {
     let content = tree.read(file)!.toString(enc);
     return file.endsWith(".json") ? JSON.parse(content) : content;
@@ -38,7 +35,7 @@ export function read(
 }
 
 export function write(
-  tree: sc.Tree,
+  tree: Tree,
   file: string,
   data: any,
   strategy: Strategy = "replace"
@@ -63,7 +60,7 @@ export function write(
 deprecated! replaced with ./json -> package{}
 //update package.json
 export function pkg(
-  tree: sc.Tree,
+  tree: Tree,
   path: string,
   data: JsonData,
   mergeOptions: MergeOptions = "merge",
@@ -82,13 +79,13 @@ export type DependenciesType = "" | "dev" | "peer";
 //todo: if a dependency already exists, just update it's version
 //todo: use addPackageJsonDependency from @schematics/angular
 export function dependencies(
-  tree: sc.Tree,
+  tree: Tree,
   path: string,
   data: JsonData,
   type: DependenciesType = "",
   mergeOptions: MergeOptions = "merge",
   keyMergeOptions: MergeOptions = "merge"
-): sc.Rule {
+): Rule {
   if (type == "dev") data = { devDependencies: data };
   else if (type == "peer") data = { peerDependencies: data };
   else data = { dependencies: data };

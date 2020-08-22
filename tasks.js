@@ -141,7 +141,11 @@ function build(watch = false) {
   //todo: use regex, don't extend the glob pattern (i.e {a,b,c}) because it will make it executed multiple times, once per each element; !(a|b|c)
   //cpx.copySync("packages/**/{!(*.ts),files/**,!(node_modules/**)}","dist/packages",{includeEmptyDirs: true //include empty dirs inside files/**});
   log("copying files ..");
-  copy(".", "dist");
+  copy(
+    ".",
+    "dist",
+    el => !el.includes("node_modules") && !el.includes("dist/")
+  );
   console.log("\n");
 
   log("installing dependencies (npm link) ...");
@@ -189,8 +193,8 @@ function publish(pkg, version) {
 
   //apply `npm version` to both srcPath and distDir to change package.json's `version` in the source code.
   //then apply `npm publish` to distPAth to publish the compiled files.
-  let distPath = `${dist}/${pkg}`,
-    srcPath = `${src}/${pkg}`;
+  let distPath = `${dist}/packages/${pkg}`,
+    srcPath = `${src}/packages/${pkg}`;
 
   if (!isPackage(srcPath) || !isPackage(distPath))
     throw new Error(

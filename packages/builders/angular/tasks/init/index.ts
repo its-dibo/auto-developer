@@ -13,6 +13,9 @@ function error(msg, mark) {
   sc.error(msg, "angular:init");
 }
 
+interface Options {
+  [key: string]: any;
+}
 export default function(
   tree: sc.Tree,
   options: Options, //builder option

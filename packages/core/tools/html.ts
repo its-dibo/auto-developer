@@ -9,7 +9,7 @@ import {
   parse as parseHtml
 } from "parse5";
 
-export function error(msg: sting, mark?: string) {
+export function error(msg: string, mark?: string) {
   return _error(msg, "tools/html" + mark ? `/${mark}` : "");
 }
 

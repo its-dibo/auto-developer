@@ -1,4 +1,4 @@
-import { Tree, error as _error, transaction } from "./schematics";
+import { Tree, error as _error, transaction, Rule } from "./schematics";
 import { read } from "./files";
 import { json } from "./json";
 import { addValue } from "./objects";
