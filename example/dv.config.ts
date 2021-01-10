@@ -29,7 +29,14 @@ const autoDev: AutoDev = {
     name,
     signal: "init",
     manager: "npm",
-    store: join(__dirname, "./builders")
+
+    //todo: replace with alias (also add to tsconfig, webpack.config)
+    //todo: use regex or string
+    store: join(__dirname, "./builders"),
+    aliases: {
+      "~*": "./builders/*",
+      "@engineers/*": "./builders/*"
+    }
   },
   //todo: support useing tsconfig paths aliases ex: @scope/packageName -> ../builders/packageName
   //https://mitchellsimoens.com/2019/08/07/why-typescript-paths-failed-me/

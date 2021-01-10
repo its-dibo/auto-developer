@@ -19,6 +19,7 @@ export default function(options: StartOptions): sc.Rule {
         if (!options.dvPath && existsSync(join(cwd(), path)))
           options.dvPath = path;
       });
+      //if(.ts)run tsc
     }
 
     if (!options.dvPath) sc.error("provide dvPath", "start");
@@ -55,6 +56,7 @@ export default function(options: StartOptions): sc.Rule {
       if (typeof factory === "string") {
         let [path, task] = factory.split(":");
 
+        //todo: if(alias matched)
         if (path.startsWith("~")) path = `@engineers/${path.slice(1)}-builder`;
         if (!path.startsWith(".")) {
           //todo: npm install -d factory)
@@ -66,6 +68,8 @@ export default function(options: StartOptions): sc.Rule {
             execSync(`npm list ${path} --silent`);
           } catch (e) {
             console.log(`>> installing ${path}`);
+            //todo: if(dev && @engineers) use $aliases/dist instead of `npm link`
+            //use webpack & ts-loader to load .ts files (use source code directly)
             execSync(
               `npm ${
                 dev && path.startsWith("@engineers/") ? "link" : "i"
