@@ -20,11 +20,24 @@ export type Strategy =
   | "append" //append the new data to the existing content
   | "prepend";
 
-export function read(tree: Tree, file: string, enc: string = "utf-8"): string {
-  if (!tree) error("tree is required", `insert(${file})`);
-  if (!file) error("file is required", `insert(${file})`);
+export function read(
+  tree: Tree,
+  file: string,
+  enc: BufferEncoding = "utf-8"
+): string {
+  if (!tree) {
+    error("tree is required", `insert(${file})`);
+    return "";
+  }
+  if (!file) {
+    error("file is required", `insert(${file})`);
+    return "";
+  }
 
-  if (!tree.exists(file)) return null;
+  if (!tree.exists(file)) {
+    error("file doesn't exist", `insert(${file})`);
+    return "";
+  }
   //throw new SchematicsException(`${file} is not existing`);
   try {
     let content = tree.read(file)!.toString(enc);
@@ -32,6 +45,7 @@ export function read(tree: Tree, file: string, enc: string = "utf-8"): string {
   } catch (e) {
     error(`error: Cannot read file ${file}: ${e.message}`, "read()");
   }
+  return "";
 }
 
 export function write(
@@ -39,9 +53,9 @@ export function write(
   file: string,
   data: any,
   strategy: Strategy = "replace"
-): Rule {
-  if (!tree.exists(file)) return tree.create(file, data);
-  else if (strategy === "replace") return tree.overwrite(file, data);
+): Tree {
+  if (!tree.exists(file)) tree.create(file, data);
+  else if (strategy === "replace") tree.overwrite(file, data);
   else if (strategy === "error") error(`${file} already exists`, "write()");
   else if (strategy === "append" || strategy === "prepend") {
     let existingData = read(tree, file);
@@ -49,10 +63,10 @@ export function write(
       if (strategy === "append") data = existingData + data;
       else data = existingData + data;
     }
-    return tree.overwite(file, data);
+    tree.overwrite(file, data);
   }
 
-  //skip
+  //todo: or return a Rule?
   return tree;
 }
 

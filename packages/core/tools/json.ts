@@ -1,4 +1,5 @@
 import {
+  NodeDependency,
   NodeDependencyType,
   addPackageJsonDependency,
   getPackageJsonDependency,
@@ -20,7 +21,9 @@ import { read, write } from "./files";
  - skip: if there is existing data, skip adding the new data. -> {x:1, y:2, obj:{a:1, b:2}}
  - error: throw an error and stop.
  */
-export type Strategy =
+
+//renamed from 'Strategy' to 'JsonWriteStrategy' to remove the conflict with ./files.ts->Strategy in ./index.ts
+export type JsonWriteStrategy =
   | "merge"
   | "softMerge"
   | "deepMerge"
@@ -45,9 +48,9 @@ export const json = {
     tree: Tree,
     file: string,
     data: Obj,
-    strategy: Strategy = "merge",
+    strategy: JsonWriteStrategy = "merge",
     removeNull = false
-  ): Rule {
+  ): Tree {
     //if !replace, we don't need to check if the file existing, and we don't need to read it
     if (strategy !== "replace") {
       let existingData = this.read(tree, file);
@@ -69,34 +72,24 @@ export const json = {
   }
 };
 
-export enum PackageType {
-  Default = "",
-  Dev = "dev",
-  Peer = "peer",
-  Optional = "optional"
-}
-
 export interface PackageDependencies {
   [name: string]: string;
 }
-export const package = {
+export const packages = {
   //todo: if(!file)tree.create(file)
   add(
     tree: Tree,
     dependencies: PackageDependencies,
-    type: PackageType = PackageType.Default,
+    type: NodeDependencyType = NodeDependencyType.Default,
     file = "/package.json",
     overwrite?: boolean
   ): Tree {
-    let depType =
-      type === PackageType.Default ? "dependencies" : `${type}Dependencies`;
-
     if (file.slice(-5) !== ".json") file += "/package.json";
     if (!tree.exists(file)) tree.create(file, "{}");
 
     for (let k in dependencies) {
-      let dependency = {
-        type: depType,
+      let dependency: NodeDependency = {
+        type,
         name: k,
         version: dependencies[k],
         overwrite

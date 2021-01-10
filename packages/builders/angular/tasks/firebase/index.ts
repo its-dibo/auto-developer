@@ -7,7 +7,7 @@ import {
   Obj
 } from "@engineers/auto-developer/tools/schematics";
 import { deepMerge } from "@engineers/auto-developer/tools/objects";
-import { package, json } from "@engineers/auto-developer/tools/json";
+import { packages, json } from "@engineers/auto-developer/tools/json";
 import {
   addImports,
   addToNgModule
@@ -80,7 +80,7 @@ export default function(
       if (config.dev) console.log(">> [angular:firebase] adding dependencies");
 
       //todo: select versions based on firebase version
-      package.add(
+      packages.add(
         tree,
         {
           firebase: "^7.14.6",
@@ -92,7 +92,7 @@ export default function(
         `${options.path}/package.json`
       );
 
-      package.add(
+      packages.add(
         tree,
         {
           "firebase-admin": "^8.6.0",
@@ -102,7 +102,7 @@ export default function(
         `${options.path}/firebase/package.json`
       );
 
-      return package.add(
+      return packages.add(
         tree,
         {
           "firebase-functions-test": "^0.1.6"

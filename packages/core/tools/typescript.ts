@@ -1,9 +1,11 @@
 import { Tree, transaction, error } from "./schematics";
 import { read } from "./files";
 import { insertImport } from "@schematics/angular/utility/ast-utils";
-import { createSourceFile, ScriptTarget } from "typescript";
+//import { createSourceFile, ScriptTarget } from "typescript";
 
-export * from "typescript";
+//todo: error TS2498: Module '"node_modules/typescript/lib/typescript"' uses 'export =' and cannot be used with 'export *'.
+//https://stackoverflow.com/questions/63604177/how-to-re-export-from-a-module-that-uses-export
+//export * from "typescript";
 export * from "@schematics/angular/utility/ast-utils";
 
 //utility/tsconfig.ts exists in the source code, but not exists in npm package

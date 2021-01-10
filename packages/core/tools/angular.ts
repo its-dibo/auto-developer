@@ -7,9 +7,9 @@ import {
   buildRelativePath,
   ModuleOptions
 } from "@schematics/angular/utility/find-module";
+//todo: import from './typescript'; fix: typescript.ts -> import * from 'typescript'
+import { createSourceFile, ScriptTarget } from "typescript";
 import {
-  createSourceFile,
-  ScriptTarget,
   addImportToModule,
   addExportToModule,
   addDeclarationToModule,
@@ -19,10 +19,10 @@ import {
 import { basename } from "path";
 
 export * from "@schematics/angular/utility/workspace";
-export * from "@schematics/angular/utility/workspace-models";
+//todo: ~/workspace already exports 'getWorkspace'
+//export * from "@schematics/angular/utility/workspace-models";
 export * from "@schematics/angular/utility/find-module";
 export * from "@schematics/angular/utility/latest-versions";
-export * from "@schematics/angular/utility/config";
 export * from "@schematics/angular/utility/ng-ast-utils";
 
 function error(msg: string, mark?: string) {
@@ -55,10 +55,10 @@ export function findModule(tree, path, options) {
  */
 export function addToNgModule(
   tree: Tree,
-  type = "import" | "declaration" | "provider" | "export" | "bootstrap",
+  type: "import" | "declaration" | "provider" | "export" | "bootstrap",
   element: string, //path to: module, component, service, ...
   module: string,
-  fromPath?: string
+  fromPath: string = ""
 ) {
   if (!module) error("no module provided to addToNgModule()");
   //module = findModule(tree, module, options.findModule);
@@ -105,7 +105,7 @@ export function angular(
   file = "/angular.json",
   targets: string[] = ["build"], //for options, configurations
   type = "production" //for configurations
-): Rule {
+): Tree {
   var content = json.read(tree, file);
   if (!content) error(`${file} dosen't exist.`);
 

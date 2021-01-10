@@ -29,7 +29,7 @@ export function runSchematics(
 ) {
   let { config, task, tree, ...opts } = options || {};
   if (typeof fn !== "function") fn = fn[task];
-  return (tree, context) => fn(tree, opts, config, context);
+  return (tree, context) => (fn as Function)(tree, opts, config, context);
 }
 
 export interface TemplatesOptions {
@@ -44,7 +44,7 @@ export function templates(
   from: string | sc.Source | any[],
   to?: string | any[],
   vars?: any,
-  options?: TemplatesOptions = {},
+  options: TemplatesOptions = {},
   tree?: sc.Tree //required if(options.replace!==false)
 ) {
   //console.log({from,to,vars,filter,merge})
@@ -98,7 +98,7 @@ export function mergeTemplate(tmpl, strategy: sc.MergeStrategy = "overwrite") {
   ]); */
 }
 
-export function error(msg, mark) {
+export function error(msg, mark = "") {
   if (["array", "object"].includes(objectType(msg))) msg = JSON.stringify(msg);
   //todo: try-> else if(!string)msg.toString()
   throw new sc.SchematicsException(`[${mark}] ${msg}`);
@@ -108,13 +108,12 @@ export function transaction(
   tree: sc.Tree,
   file: string,
   //todo: typeof sc.InsertChange ??
-  changes: InsertChange | InsertChange[],
+  changes: Change | Change[],
   direction: "left" | "right" = "left"
 ) {
   //uppercase the first letter  https://flaviocopes.com/how-to-uppercase-first-letter-javascript/
   direction = direction.charAt(0).toUpperCase() + direction.slice(1);
-  if (!(changes instanceof Array))
-    (changes as InsertChange[]) = [changes as InsertChange];
+  if (!(changes instanceof Array)) (changes as Change[]) = [changes as Change];
 
   let recorder = tree.beginUpdate(file);
   for (let change of changes) {

@@ -4,7 +4,7 @@ import {
   deepMerge,
   strings
 } from "@engineers/auto-developer/tools/objects";
-import { package } from "@engineers/auto-developer/tools/json";
+import { packages } from "@engineers/auto-developer/tools/json";
 
 export interface Options {
   name: string;
@@ -216,7 +216,7 @@ export default function(
         dep["typescript"] = "~3.8.3";
         dep["tslib"] = "^1.10.0";
       }
-      return package.add(tree, dep, "dev", path);
+      return packages.add(tree, dep, "dev", path);
     }
   ]);
 }

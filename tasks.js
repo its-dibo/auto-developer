@@ -117,6 +117,7 @@ function log(msg, sub = false) {
   else console.log(` > ${msg}`);
 }
 //------------- /helpers ----------------
+
 function build(watch = false) {
   //create 'dist' (by running tsc & cpx) then pack `core` and install it into every builder
 
@@ -125,7 +126,19 @@ function build(watch = false) {
   log("deleting ./dist");
   del("./dist", el => !el.includes("node_modules"));
 
+  //run `typescript` in the following order:
+  //1- core (@engineers/auto-developers)
+  //2- builders & cli (dependent on core)
+  //3- other
+
   log("compiling typescript");
+  cd(`${src}/core`);
+  exec(`tsc ${watch ? "-w" : ""}`);
+
+  cd(`${src}/cli`);
+  exec(`tsc ${watch ? "-w" : ""}`);
+
+  cd(dir);
   exec(`tsc ${watch ? "-w" : ""}`);
 
   /*exec(
@@ -158,8 +171,9 @@ function build(watch = false) {
 
   //link all builders packages and install '@engineers/auto-developer' inside each builder.
   readdirSync(`${dist}/builders`).forEach(builder => {
-    if (!isPackage(`${dist}/builders` + builder)) return;
-    cd(`${dist}/builders` + builder);
+    let pkg = `${dist}/builders/${builder}`;
+    if (!isPackage(pkg)) return;
+    cd(pkg);
 
     //add a symlink to the global `node_module`.
     npm("link");
@@ -171,6 +185,10 @@ function build(watch = false) {
   npm("link @engineers/auto-developer");
   //npm("link @engineers/nodejs-builder");
   //npm("link @engineers/angular-builder");
+
+  //@engineers/auto-developer is used when executing the cmd `tsc`
+  npm("link @engineers/auto-developer");
+  cd(dir);
 }
 
 function publish(pkg, version) {
