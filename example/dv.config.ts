@@ -34,8 +34,8 @@ const autoDev: AutoDev = {
     //todo: use regex or string
     store: join(__dirname, "./builders"),
     aliases: {
-      "~*": "./builders/*",
-      "@engineers/*": "./builders/*"
+      //relative to packages/cli
+      "^~": "../builders/"
     }
   },
   //todo: support useing tsconfig paths aliases ex: @scope/packageName -> ../builders/packageName

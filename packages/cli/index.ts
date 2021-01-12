@@ -38,6 +38,7 @@ export default function(options: StartOptions): Rule {
     //or rules=[read(path)]
     let autoDev = require(options.dvPath);
     autoDev.config = autoDev.config || {};
+    autoDev.config.aliases = autoDev.config.aliases || {};
     autoDev.config.dev = dev;
 
     //todo: run every project (or account) inside a sandboxed container.
@@ -57,14 +58,28 @@ export default function(options: StartOptions): Rule {
 
       let rule;
 
-      //todo: support relative paths
-
       if (typeof factory === "string") {
         let [path, task] = factory.split(":");
 
         //todo: also use aliases -> (same as tsconfig.path & webpack.alias)
-        //default value for alias['~']:
-        if (path.startsWith("~")) path = `@engineers/${path.slice(1)}-builder`;
+        //todo: multiAliases: if true (default) path may be replaced multiple times, if multiple aliases matched.
+        let aliases = autoDev.config.aliases;
+        for (let k in aliases) {
+          if (aliases.hasOwnProperty(k)) {
+            //todo: use regex or string
+            //todo: if regex -> convert to equivelent string when adding to
+            //tsconfig.path & webpack.alias
+            //todo: support '*', works as /(.+)/ ex: {'x/*/y/*': 'xx/$1/yy/$2'}
+
+            let alias = new RegExp(k);
+            path = path.replace(alias, aliases[k]);
+            //todo:also replace $n (ex: $1) -> aliases{'(x)': '=$1='}
+          }
+        }
+
+        if (path.startsWith("~"))
+          //default value for alias['~']:
+          path = `@engineers/${path.slice(1)}-builder`;
 
         if (!path.startsWith(".")) {
           //todo: npm install -d factory)
@@ -84,9 +99,11 @@ export default function(options: StartOptions): Rule {
               } ${path}`
             );
           }
-        } else if (!existsSync(path))
-          //todo: add to webpack & ts-loader
-          error(`Error: path not found ${path}`, "start");
+        }
+        //todo: add to webpack & ts-loader
+        //todo: relative to dist/*/cli, not cwd()
+        //  else if (!existsSync(path))
+        //  error(`Error: path not found ${path}`, "start");
 
         //factory here is a path to collection.json file (i.e using schematics)
         //schematics function accepts options only (ex: function myschematics(options):Rule{})

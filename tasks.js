@@ -170,7 +170,7 @@ function build(watch = false) {
   //npm("link @engineers/auto-developer");
 
   //link all builders packages and install '@engineers/auto-developer' inside each builder.
-  readdirSync(`${dist}/builders`).forEach(builder => {
+  /*readdirSync(`${dist}/builders`).forEach(builder => {
     let pkg = `${dist}/builders/${builder}`;
     if (!isPackage(pkg)) return;
     cd(pkg);
@@ -178,7 +178,7 @@ function build(watch = false) {
     //add a symlink to the global `node_module`.
     npm("link");
     //npm("link @engineers/auto-developer");
-  });
+  });*/
 
   //install '@engineers/auto-developer' in dist/ because it used bt dv.config.js
   cd(dist);
