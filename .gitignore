@@ -8,8 +8,9 @@ node_modules
 *.cache
 *.tmp
 
-# any folder starts with '__', ex: __notes
-__*
+# any folder or file ends with '!!', ex: notes!!
+*!!
+*!!.*
 
 
 # profiling files
