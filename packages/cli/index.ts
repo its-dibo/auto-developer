@@ -1,4 +1,12 @@
-import * as sc from "@engineers/auto-developer/tools/schematics";
+import {
+  Rule,
+  Tree,
+  SchematicContext,
+  error,
+  externalSchematic,
+  chain
+  //  read
+} from "@engineers/auto-developer/tools/schematics";
 import { existsSync } from "fs";
 import { join } from "path";
 import { cwd } from "process";
@@ -10,8 +18,8 @@ export interface StartOptions {
   dvPath?: string; //path to dv config, relative to the location where the cmd executed (default ./dv.js)
 }
 
-export default function(options: StartOptions): sc.Rule {
-  return (tree: sc.Tree, context: sc.SchematicContext) => {
+export default function(options: StartOptions): Rule {
+  return (tree: Tree, context: SchematicContext) => {
     //todo: dv.config.json|js|ts
     if (!options.dvPath) {
       ["json", "js", "ts"].forEach(el => {
@@ -22,14 +30,14 @@ export default function(options: StartOptions): sc.Rule {
       //if(.ts)run tsc
     }
 
-    if (!options.dvPath) sc.error("provide dvPath", "start");
+    if (!options.dvPath) error("provide dvPath", "start");
     //dvPath is relative to cwd() , i.e: where the cmd executed,
     //not relative to __dirname
     options.dvPath = join(cwd(), options.dvPath);
     if (!existsSync(options.dvPath))
-      sc.error(`path to dv config is not found: ${options.dvPath}`, "start");
+      error(`path to dv config is not found: ${options.dvPath}`, "start");
 
-    //or rules=[sc.read(path)]t
+    //or rules=[read(path)]t
     let autoDev = require(options.dvPath);
     autoDev.config = autoDev.config || {};
     autoDev.config.dev = dev;
@@ -77,7 +85,7 @@ export default function(options: StartOptions): sc.Rule {
             );
           }
         } else if (!existsSync(path))
-          sc.error(`Error: path not found ${path}`, "start");
+          error(`Error: path not found ${path}`, "start");
 
         //factory here is a path to collection.json file (i.e using schematics)
         //schematics function accepts options only (ex: function myschematics(options):Rule{})
@@ -85,7 +93,7 @@ export default function(options: StartOptions): sc.Rule {
         if (path.endsWith(".json")) {
           builderOptions.task = task;
           builderOptions.config = autoDev.config;
-          rule = sc.externalSchematic(path, "runSchematics", builderOptions);
+          rule = externalSchematic(path, "runSchematics", builderOptions);
         }
 
         //get function from this file
@@ -106,6 +114,6 @@ export default function(options: StartOptions): sc.Rule {
         JSON.stringify(autoDev)
       );
     });
-    return sc.chain(rules);
+    return chain(rules);
   };
 }
