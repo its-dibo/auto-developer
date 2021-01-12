@@ -21,13 +21,11 @@ export interface StartOptions {
 export default function(options: StartOptions): Rule {
   return (tree: Tree, context: SchematicContext) => {
     //todo: dv.config.json|js|ts
-    if (!options.dvPath) {
+    while (!options.dvPath) {
       ["json", "js", "ts"].forEach(el => {
         let path = `./dv.config.${el}`;
-        if (!options.dvPath && existsSync(join(cwd(), path)))
-          options.dvPath = path;
+        if (existsSync(join(cwd(), path))) options.dvPath = path;
       });
-      //if(.ts)run tsc
     }
 
     if (!options.dvPath) error("provide dvPath", "start");
@@ -37,7 +35,7 @@ export default function(options: StartOptions): Rule {
     if (!existsSync(options.dvPath))
       error(`path to dv config is not found: ${options.dvPath}`, "start");
 
-    //or rules=[read(path)]t
+    //or rules=[read(path)]
     let autoDev = require(options.dvPath);
     autoDev.config = autoDev.config || {};
     autoDev.config.dev = dev;
@@ -64,8 +62,10 @@ export default function(options: StartOptions): Rule {
       if (typeof factory === "string") {
         let [path, task] = factory.split(":");
 
-        //todo: if(alias matched)
+        //todo: also use aliases -> (same as tsconfig.path & webpack.alias)
+        //default value for alias['~']:
         if (path.startsWith("~")) path = `@engineers/${path.slice(1)}-builder`;
+
         if (!path.startsWith(".")) {
           //todo: npm install -d factory)
           //todo: support builderFactory version @scope/package@version
@@ -85,6 +85,7 @@ export default function(options: StartOptions): Rule {
             );
           }
         } else if (!existsSync(path))
+          //todo: add to webpack & ts-loader
           error(`Error: path not found ${path}`, "start");
 
         //factory here is a path to collection.json file (i.e using schematics)
